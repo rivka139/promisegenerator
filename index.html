@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>New Covenant Fellowship – End of Year Promise</title>
+  <title>New Covenant Fellowship – Promise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -28,7 +28,7 @@
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 24px;
       color: #2c3e50;
       margin-bottom: 5px;
     }
@@ -39,12 +39,21 @@
       margin-bottom: 25px;
     }
 
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
     .promise {
-      font-size: 20px;
+      font-size: 18px;
       color: #333;
-      min-height: 100px;
-      line-height: 1.5;
-      margin-bottom: 30px;
+      min-height: 150px;
+      line-height: 1.6;
+      margin: 25px 0;
       opacity: 0;
       transform: translateY(15px);
       transition: opacity 0.6s ease, transform 0.6s ease;
@@ -53,6 +62,15 @@
     .promise.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .english {
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+
+    .telugu {
+      font-size: 19px;
     }
 
     button {
@@ -64,84 +82,93 @@
       background: #4a6cf7;
       color: white;
       cursor: pointer;
-      margin-bottom: 12px;
     }
 
-    button:hover {
-      background: #3954c5;
-    }
-
-    .share-btn {
-      background: #25D366;
-    }
-
-    .share-btn:hover {
-      background: #1da851;
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 22px;
-      }
-
-      .promise {
-        font-size: 18px;
-      }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>God’s Promise for You ✝️</h1>
-    <div class="church-name">New Covenant Fellowship</div>
+<div class="card">
+  <h1>God’s Promise for You ✝️</h1>
+  <div class="church-name">New Covenant Fellowship</div>
 
-    <div class="promise" id="promise">
-      Tap below to receive your end-of-year promise.
-    </div>
+  <input type="text" id="nameInput" placeholder="Enter your name" />
 
-    <button onclick="generatePromise()">Receive Promise</button>
-    <button class="share-btn" onclick="shareWhatsApp()">Share on WhatsApp</button>
-  </div>
+  <div class="promise" id="promise"></div>
 
-  <script>
-    const promises = [
-      "“For I know the plans I have for you,” declares the Lord. – Jeremiah 29:11",
-      "The Lord will go before you and be with you. – Deuteronomy 31:8",
-      "Those who hope in the Lord will renew their strength. – Isaiah 40:31",
-      "The Lord is my shepherd; I lack nothing. – Psalm 23:1",
-      "God is our refuge and strength, an ever-present help in trouble. – Psalm 46:1",
-      "The Lord bless you and keep you. – Numbers 6:24",
-      "Be strong and courageous, for the Lord your God is with you. – Joshua 1:9"
-    ];
+  <button id="generateBtn" onclick="generatePromise()">
+    Receive My Promise
+  </button>
+</div>
 
-    let currentPromise = "";
+<script>
+  const promises = [
+    {
+      en: "For I know the plans I have for you, declares the Lord. – Jeremiah 29:11",
+      te: "నేను మీ కొరకు ఆలోచిస్తున్న యోచనలు శుభకరమైనవే అని యెహోవా సెలవిచ్చుచున్నాడు. – యిర్మియా 29:11"
+    },
+    {
+      en: "The Lord will go before you and be with you. – Deuteronomy 31:8",
+      te: "యెహోవా నీకు ముందుగా నడిచిపోవును; ఆయన నీతో కూడ ఉండును. – ద్వితీయోపదేశకాండము 31:8"
+    },
+    {
+      en: "Those who hope in the Lord will renew their strength. – Isaiah 40:31",
+      te: "యెహోవాను ఆశ్రయించువారు నూతన బలము పొందుదురు. – యెషయా 40:31"
+    },
+    {
+      en: "The Lord is my shepherd; I lack nothing. – Psalm 23:1",
+      te: "యెహోవా నా కాపరి; నాకు లోటు లేదు. – కీర్తనలు 23:1"
+    },
+    {
+      en: "Be strong and courageous, for the Lord your God is with you. – Joshua 1:9",
+      te: "నీ దేవుడైన యెహోవా నీతో ఉన్నాడు; ధైర్యంగా ఉండు. – యెహోషువ 1:9"
+    }
+  ];
 
-    function generatePromise() {
-      const promiseBox = document.getElementById("promise");
-      const randomIndex = Math.floor(Math.random() * promises.length);
-      currentPromise = promises[randomIndex];
+  const saved = localStorage.getItem("promiseData");
 
-      promiseBox.classList.remove("show");
+  if (saved) {
+    const data = JSON.parse(saved);
+    showPromise(data.name, data.promise);
+    lockForm();
+  }
 
-      setTimeout(() => {
-        promiseBox.textContent = currentPromise;
-        promiseBox.classList.add("show");
-      }, 100);
+  function generatePromise() {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
+      alert("Please enter your name");
+      return;
     }
 
-    function shareWhatsApp() {
-      if (!currentPromise) {
-        alert("Please generate a promise first 😊");
-        return;
-      }
+    const chosen = promises[Math.floor(Math.random() * promises.length)];
+    const data = { name, promise: chosen };
 
-      const message = `My end-of-year promise from New Covenant Fellowship:\n\n${currentPromise}`;
-      const url = "https://wa.me/?text=" + encodeURIComponent(message);
-      window.open(url, "_blank");
-    }
-  </script>
+    localStorage.setItem("promiseData", JSON.stringify(data));
+    showPromise(name, chosen);
+    lockForm();
+  }
+
+  function showPromise(name, promise) {
+    const box = document.getElementById("promise");
+    box.innerHTML = `
+      <strong>${name},</strong>
+      <div class="english">${promise.en}</div>
+      <div class="telugu">${promise.te}</div>
+    `;
+    box.classList.add("show");
+  }
+
+  function lockForm() {
+    document.getElementById("generateBtn").disabled = true;
+    document.getElementById("nameInput").disabled = true;
+  }
+</script>
 
 </body>
 </html>
+
