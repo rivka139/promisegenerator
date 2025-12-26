@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Covenant Fellowship – End of Year Promise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #eef2ff, #ffffff);
+      font-family: "Georgia", serif;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 30px;
+      text-align: center;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      font-size: 26px;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .church-name {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .promise {
+      font-size: 20px;
+      color: #333;
+      min-height: 100px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .promise.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #4a6cf7;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    button:hover {
+      background: #3954c5;
+    }
+
+    .share-btn {
+      background: #25D366;
+    }
+
+    .share-btn:hover {
+      background: #1da851;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .promise {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>God’s Promise for You ✝️</h1>
+    <div class="church-name">New Covenant Fellowship</div>
+
+    <div class="promise" id="promise">
+      Tap below to receive your end-of-year promise.
+    </div>
+
+    <button onclick="generatePromise()">Receive Promise</button>
+    <button class="share-btn" onclick="shareWhatsApp()">Share on WhatsApp</button>
+  </div>
+
+  <script>
+    const promises = [
+      "“For I know the plans I have for you,” declares the Lord. – Jeremiah 29:11",
+      "The Lord will go before you and be with you. – Deuteronomy 31:8",
+      "Those who hope in the Lord will renew their strength. – Isaiah 40:31",
+      "The Lord is my shepherd; I lack nothing. – Psalm 23:1",
+      "God is our refuge and strength, an ever-present help in trouble. – Psalm 46:1",
+      "The Lord bless you and keep you. – Numbers 6:24",
+      "Be strong and courageous, for the Lord your God is with you. – Joshua 1:9"
+    ];
+
+    let currentPromise = "";
+
+    function generatePromise() {
+      const promiseBox = document.getElementById("promise");
+      const randomIndex = Math.floor(Math.random() * promises.length);
+      currentPromise = promises[randomIndex];
+
+      promiseBox.classList.remove("show");
+
+      setTimeout(() => {
+        promiseBox.textContent = currentPromise;
+        promiseBox.classList.add("show");
+      }, 100);
+    }
+
+    function shareWhatsApp() {
+      if (!currentPromise) {
+        alert("Please generate a promise first 😊");
+        return;
+      }
+
+      const message = `My end-of-year promise from New Covenant Fellowship:\n\n${currentPromise}`;
+      const url = "https://wa.me/?text=" + encodeURIComponent(message);
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
