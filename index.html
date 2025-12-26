@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>New Covenant Fellowship – Promise</title>
+  <title>New Covenant Fellowship – Promise 2026</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -20,11 +20,16 @@
     .card {
       background: white;
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       padding: 40px 30px;
       text-align: center;
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    img {
+      max-width: 120px;
+      margin-bottom: 15px;
     }
 
     h1 {
@@ -36,7 +41,15 @@
     .church-name {
       font-size: 16px;
       color: #666;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+    }
+
+    .instructions {
+      font-size: 15px;
+      color: #444;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      text-align: left;
     }
 
     input {
@@ -51,7 +64,7 @@
     .promise {
       font-size: 18px;
       color: #333;
-      min-height: 150px;
+      min-height: 180px;
       line-height: 1.6;
       margin: 25px 0;
       opacity: 0;
@@ -65,7 +78,7 @@
     }
 
     .english {
-      margin-bottom: 15px;
+      margin: 12px 0;
       font-style: italic;
     }
 
@@ -94,10 +107,27 @@
 <body>
 
 <div class="card">
+
+  <!-- LOGO -->
+  <img src="logo.jpeg" alt="Church Logo">
+
   <h1>God’s Promise for You ✝️</h1>
   <div class="church-name">New Covenant Fellowship</div>
 
-  <input type="text" id="nameInput" placeholder="Enter your name" />
+  <!-- INSTRUCTIONS -->
+  <div class="instructions">
+    <strong>English:</strong><br>
+    Please enter your name and press the button below.  
+    You can receive only one promise for the year 2026.
+
+    <br><br>
+
+    <strong>తెలుగు:</strong><br>
+    దయచేసి మీ పేరు నమోదు చేసి క్రింది బటన్‌ను నొక్కండి.  
+    2026 సంవత్సరానికి మీరు ఒక్కసారి మాత్రమే వాగ్దానం పొందగలరు.
+  </div>
+
+  <input type="text" id="nameInput" placeholder="Enter your name / మీ పేరు నమోదు చేయండి">
 
   <div class="promise" id="promise"></div>
 
@@ -130,7 +160,7 @@
     }
   ];
 
-  const saved = localStorage.getItem("promiseData");
+  const saved = localStorage.getItem("promise2026");
 
   if (saved) {
     const data = JSON.parse(saved);
@@ -141,14 +171,14 @@
   function generatePromise() {
     const name = document.getElementById("nameInput").value.trim();
     if (!name) {
-      alert("Please enter your name");
+      alert("Please enter your name / దయచేసి మీ పేరు నమోదు చేయండి");
       return;
     }
 
     const chosen = promises[Math.floor(Math.random() * promises.length)];
     const data = { name, promise: chosen };
 
-    localStorage.setItem("promiseData", JSON.stringify(data));
+    localStorage.setItem("promise2026", JSON.stringify(data));
     showPromise(name, chosen);
     lockForm();
   }
@@ -156,7 +186,7 @@
   function showPromise(name, promise) {
     const box = document.getElementById("promise");
     box.innerHTML = `
-      <strong>${name},</strong>
+      <strong>${name}, your promise for the year 2026 is:</strong>
       <div class="english">${promise.en}</div>
       <div class="telugu">${promise.te}</div>
     `;
@@ -171,4 +201,6 @@
 
 </body>
 </html>
+
+
 
