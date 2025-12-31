@@ -20,7 +20,7 @@
     .card {
       background: white;
       width: 100%;
-      max-width: 540px;
+      max-width: 560px;
       padding: 40px 30px;
       text-align: center;
       border-radius: 20px;
@@ -86,6 +86,12 @@
       font-size: 19px;
     }
 
+    .timer {
+      font-size: 14px;
+      color: #aa0000;
+      margin-bottom: 15px;
+    }
+
     button {
       width: 100%;
       padding: 14px;
@@ -108,32 +114,32 @@
 
 <div class="card">
 
-  <!-- LOGO -->
   <img src="logo.jpeg" alt="Church Logo">
 
   <h1>God’s Promise for You ✝️</h1>
   <div class="church-name">New Covenant Fellowship</div>
 
-  <!-- INSTRUCTIONS -->
   <div class="instructions">
     <strong>English:</strong><br>
-    Please enter your name and press the button below.  
-    You can receive only one promise for the year 2026.
+    Enter a name and receive a promise for that person.  
+    Each name can be used only once.  
+    This session will close automatically after 5 hours.
 
     <br><br>
 
     <strong>తెలుగు:</strong><br>
-    దయచేసి మీ పేరు నమోదు చేసి క్రింది బటన్‌ను నొక్కండి.  
-    2026 సంవత్సరానికి మీరు ఒక్కసారి మాత్రమే వాగ్దానం పొందగలరు.
+    ఒక వ్యక్తి పేరు నమోదు చేసి వాగ్దానం పొందండి.  
+    ఒక్కో పేరు ఒక్కసారి మాత్రమే ఉపయోగించవచ్చు.  
+    ఈ సెషన్ 5 గంటల తర్వాత స్వయంచాలకంగా ముగుస్తుంది.
   </div>
 
-  <input type="text" id="nameInput" placeholder="Enter your name / మీ పేరు నమోదు చేయండి">
+  <div class="timer" id="timer"></div>
+
+  <input type="text" id="nameInput" placeholder="Enter name / పేరు నమోదు చేయండి">
 
   <div class="promise" id="promise"></div>
 
-  <button id="generateBtn" onclick="generatePromise()">
-    Receive My Promise
-  </button>
+  <button id="generateBtn" onclick="generatePromise()">Receive Promise</button>
 </div>
 
 <script>
@@ -153,54 +159,13 @@
     {
       en: "The Lord is my shepherd; I lack nothing. – Psalm 23:1",
       te: "యెహోవా నా కాపరి; నాకు లోటు లేదు. – కీర్తనలు 23:1"
-    },
-    {
-      en: "Be strong and courageous, for the Lord your God is with you. – Joshua 1:9",
-      te: "నీ దేవుడైన యెహోవా నీతో ఉన్నాడు; ధైర్యంగా ఉండు. – యెహోషువ 1:9"
     }
   ];
 
-  const saved = localStorage.getItem("promise2026");
+  // ---- TIMER (5 HOURS) ----
+  const FIVE_HOURS = 5 * 60 * 60 * 1000;
+  let startTime = localStorage.getItem("sessionStart");
 
-  if (saved) {
-    const data = JSON.parse(saved);
-    showPromise(data.name, data.promise);
-    lockForm();
-  }
-
-  function generatePromise() {
-    const name = document.getElementById("nameInput").value.trim();
-    if (!name) {
-      alert("Please enter your name / దయచేసి మీ పేరు నమోదు చేయండి");
-      return;
-    }
-
-    const chosen = promises[Math.floor(Math.random() * promises.length)];
-    const data = { name, promise: chosen };
-
-    localStorage.setItem("promise2026", JSON.stringify(data));
-    showPromise(name, chosen);
-    lockForm();
-  }
-
-  function showPromise(name, promise) {
-    const box = document.getElementById("promise");
-    box.innerHTML = `
-      <strong>${name}, your promise for the year 2026 is:</strong>
-      <div class="english">${promise.en}</div>
-      <div class="telugu">${promise.te}</div>
-    `;
-    box.classList.add("show");
-  }
-
-  function lockForm() {
-    document.getElementById("generateBtn").disabled = true;
-    document.getElementById("nameInput").disabled = true;
-  }
-</script>
-
-</body>
-</html>
-
-
-
+  if (!startTime) {
+    startTime = Date.now();
+    localStorage.setItem(
