@@ -10,7 +10,7 @@
       margin: 0;
       min-height: 100vh;
       background: linear-gradient(135deg, #eef2ff, #ffffff);
-      font-family: "Georgia", serif;
+      font-family: Georgia, serif;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -27,8 +27,17 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
 
-    h1 { font-size: 26px; color: #2c3e50; margin-bottom: 5px; }
-    .church { font-size: 16px; color: #666; margin-bottom: 20px; }
+    h1 {
+      font-size: 26px;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .church {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 20px;
+    }
 
     .instructions {
       font-size: 14px;
@@ -59,10 +68,17 @@
       margin-bottom: 12px;
     }
 
-    button:hover { background: #3954c5; }
+    button:hover {
+      background: #3954c5;
+    }
 
-    .share-btn { background: #25D366; }
-    .share-btn:hover { background: #1da851; }
+    .share-btn {
+      background: #25D366;
+    }
+
+    .share-btn:hover {
+      background: #1da851;
+    }
 
     .promise {
       margin-top: 20px;
@@ -76,13 +92,19 @@
       text-align: left;
     }
 
-    .promise.show { opacity: 1; transform: translateY(0); }
-    .name-label { font-weight: bold; margin-bottom: 10px; }
+    .promise.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .name-label {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
     @media (max-width: 480px) {
       h1 { font-size: 22px; }
       .promise { font-size: 17px; }
-      .instructions { text-align: left; }
     }
   </style>
 </head>
@@ -94,10 +116,8 @@
     <div class="church">New Covenant Fellowship</div>
 
     <div class="instructions">
-      <strong>English:</strong> Enter your name and receive a promise.  
-      You can share your promise on WhatsApp.<br><br>
-      <strong>తెలుగు:</strong> మీ పేరు నమోదు చేసి దేవుని వాగ్దానాన్ని పొందండి.  
-      మీ వాగ్దానాన్ని WhatsApp లో పంచుకోండి.
+      <strong>English:</strong> Enter your name and receive a promise from God.<br>
+      <strong>తెలుగు:</strong> మీ పేరు నమోదు చేసి దేవుని వాగ్దానాన్ని పొందండి.
     </div>
 
     <input type="text" id="nameInput" placeholder="Enter your name / మీ పేరు నమోదు చేయండి">
@@ -108,8 +128,11 @@
     <div class="promise" id="promiseBox"></div>
   </div>
 
+  <!-- LOAD PROMISES FILE -->
+  <script src="promises.js"></script>
+
+  <!-- MAIN SCRIPT -->
   <script>
-    
     let currentPromise = "";
     let currentName = "";
 
@@ -128,6 +151,7 @@
       currentName = name;
 
       promiseBox.classList.remove("show");
+
       setTimeout(() => {
         promiseBox.innerHTML = `
           <div class="name-label">Promise for: ${name}</div>
@@ -152,8 +176,6 @@
       const url = "https://wa.me/?text=" + encodeURIComponent(message);
       window.open(url, "_blank");
     }
-    <script src="promises.js"></script>
-
   </script>
 
 </body>
