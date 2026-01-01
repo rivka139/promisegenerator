@@ -1,61 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>New Covenant Fellowship – Promise Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #eef2ff, #ffffff);
+      font-family: Georgia, serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 550px;
+      padding: 35px 30px;
+      text-align: center;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      font-size: 26px;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .church {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .instructions {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #4a6cf7;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    button:hover {
+      background: #3954c5;
+    }
+
+    .share-btn {
+      background: #25D366;
+    }
+
+    .share-btn:hover {
+      background: #1da851;
+    }
+
+    .promise {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      line-height: 1.6;
+      min-height: 120px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      text-align: left;
+    }
+
+    .promise.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .name-label {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 22px; }
+      .promise { font-size: 17px; }
+    }
+  </style>
 </head>
 
 <body>
 
-  <h2>New Covenant Fellowship – Promise Generator</h2>
+  <div class="card">
+    <h1>God’s Promise ✝️</h1>
+    <div class="church">New Covenant Fellowship</div>
 
-  <input id="nameInput" placeholder="Enter a name" />
-  <br /><br />
+    <div class="instructions">
+      <strong>English:</strong> Enter your name and receive a promise from God.<br>
+      <strong>తెలుగు:</strong> మీ పేరు నమోదు చేసి దేవుని వాగ్దానాన్ని పొందండి.
+    </div>
 
-  <button onclick="generatePromise()">Get Promise</button>
-  <button onclick="shareWhatsApp()" id="waBtn" disabled>Share on WhatsApp</button>
+    <input type="text" id="nameInput" placeholder="Enter your name / మీ పేరు నమోదు చేయండి">
 
-  <pre id="result"></pre>
+    <button onclick="generatePromise()">Receive Promise</button>
+    <button class="share-btn" onclick="shareWhatsApp()">Share on WhatsApp</button>
 
-  <!-- ✅ LOAD promises.js FIRST -->
+    <div class="promise" id="promiseBox"></div>
+  </div>
+
+  <!-- LOAD PROMISES FILE -->
   <script src="promises.js"></script>
 
-  <!-- ✅ MAIN LOGIC -->
+  <!-- MAIN SCRIPT -->
   <script>
-    const CHURCH_FOOTER = "New Covenant Fellowship – 2026 Promise";
-    let currentMessage = "";
-
-    function getRandomPromise() {
-      return promises[Math.floor(Math.random() * promises.length)];
-    }
+    let currentPromise = "";
+    let currentName = "";
 
     function generatePromise() {
-      const name = document.getElementById("nameInput").value.trim();
+      const nameInput = document.getElementById("nameInput");
+      const name = nameInput.value.trim();
+      const promiseBox = document.getElementById("promiseBox");
+
       if (!name) {
-        document.getElementById("result").innerText = "Please enter a name.";
+        alert("Please enter your name / దయచేసి మీ పేరు నమోదు చేయండి");
         return;
       }
 
-      const verse = getRandomPromise();
-      currentMessage =
-`${name}, this promise is for you:
+      const random = PROMISES[Math.floor(Math.random() * PROMISES.length)];
+      currentPromise = `${random.en}\n\n${random.te}`;
+      currentName = name;
 
-${verse.en}
-${verse.te}
+      promiseBox.classList.remove("show");
 
-— ${CHURCH_FOOTER}`;
+      setTimeout(() => {
+        promiseBox.innerHTML = `
+          <div class="name-label">Promise for: ${name}</div>
+          ${random.en}<br><br>${random.te}
+        `;
+        promiseBox.classList.add("show");
+      }, 100);
 
-      document.getElementById("result").innerText = currentMessage;
-      document.getElementById("waBtn").disabled = false;
+      nameInput.value = "";
     }
 
     function shareWhatsApp() {
-      if (!currentMessage) return;
-      const url = "https://wa.me/?text=" + encodeURIComponent(currentMessage);
+      if (!currentPromise || !currentName) {
+        alert("Please generate a promise first 😊");
+        return;
+      }
+
+      const message =
+        `Promise for ${currentName} from New Covenant Fellowship:\n\n` +
+        currentPromise;
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(message);
       window.open(url, "_blank");
     }
   </script>
 
 </body>
 </html>
+
